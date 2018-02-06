@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author user
+ * @author David
  */
 
 @WebServlet(name = "EmailServlet", urlPatterns = {"/EmailServlet"})

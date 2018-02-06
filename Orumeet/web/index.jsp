@@ -1,7 +1,7 @@
 <%-- 
     Document   : sendMail
     Created on : 2018-feb-01, 14:48:07
-    Author     : user
+    Author     : David
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

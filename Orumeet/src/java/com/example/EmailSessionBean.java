@@ -14,13 +14,15 @@ import javax.mail.internet.MimeMessage;
 
 /**
  *
- * @author user
+ * @author David
  */
 @Stateless
 @LocalBean
 public class EmailSessionBean {
+    
 
-    private String from = "wirendavid@gmail.com";
+
+    private String from = "david.w91@hotmail.com";
     
     /**
      *
@@ -30,50 +32,23 @@ public class EmailSessionBean {
      */
 
     public void sendEmail(String to, String subject, String body){
-                
+        
+        //adding properties to establish a connection to mail server in this case hotmail.
         Properties props = new Properties();        
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.host", "smtp.live.com");
+        props.put("mail.smtp.port", "587");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.debug", "true");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
+        props.put("mail.smtp.socketFactory.port", "587");
+        props.put("mail.smtp.ssl.trust", "smtp.live.com");
 
-//        switch(protocol){
-//            case SMTPS:
-//                props.put("mail.smtp.ssl.enable", true);
-//                break;
-//            case TLS:
-//                props.put("mail.smtp.starttls.enable", true);
-//                break;
-//        }
-          
-//        Authenticator authenticator = null;
-//        if (auth) {
-//            props.put("mail.smtp.auth", true);
-//            authenticator = new Authenticator() {
-//                private final PasswordAuthentication pa = new PasswordAuthentication(username, password);
-//                @Override
-//                public PasswordAuthentication getPasswordAuthentication() {
-//                    return pa;
-//                }
-//            };
-//        }
-
-//        SmtpAuthenticator authenticator = new SmtpAuthenticator();
-//        javax.mail.Message message= new MimeMessage(Session.getDefaultInstance(props, authenticator));
-//        Session session = Session.getInstance(props, authenticator);
-//        session.setDebug(true);
         
         SmtpAuthenticator auth = new SmtpAuthenticator();
         Session session = Session.getInstance(props, auth);
         session.setDebug(true);
         
-        //Session session = Session.getInstance(props, authenticator);
-        //session.setDebug(debug);
-        
+        //fetch input from the fields to produce the mime message.
         MimeMessage message = new MimeMessage(session);
         try {
             
@@ -82,7 +57,8 @@ public class EmailSessionBean {
             message.setRecipients(Message.RecipientType.TO, address);
             message.setSubject(subject);
             message.setText(body);
-            //send message
+            
+            //send message using the Transport() funktion            
             Transport.send(message);
 
             System.out.println("message sent successfully");

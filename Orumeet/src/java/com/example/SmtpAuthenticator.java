@@ -10,7 +10,7 @@ import javax.mail.PasswordAuthentication;
 
 /**
  *
- * @author user
+ * @author David
  */
 public class SmtpAuthenticator extends Authenticator{
 
@@ -25,10 +25,11 @@ public class SmtpAuthenticator extends Authenticator{
      *
      * @return
      */
+    //Creating a class for handling the Account information
     @Override
     public PasswordAuthentication getPasswordAuthentication(){
-        String username = "wirendavid@gmail.com";
-        String password = "P455-word";
+        String username = "david.w91@hotmail.com";
+        String password = "*******";
         if((username != null) && (username.length() > 0) && (password != null) && (password.length() > 0)){
             return new PasswordAuthentication(username, password);
         }
