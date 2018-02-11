@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="stylesheet/style.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Email</title>
     </head>
@@ -15,7 +16,7 @@
         <h1>Email</h1>
         <form method="POST" action="EmailServlet">
             <label for="to">TO:</label> <input id="to" name="to" type="text" /><br>
-            <label for="subject">Subject:</label>Subject:<input id="Subject" name="Subject" type="text" /><br>
+            <label for="subject">Subject:</label><input id="subject" name="subject" type="text" /><br>
             <textarea name="body" cols="60" rows="15"></textarea><br>
             <input type="submit" value="Send" />
             <input type="reset" value="Clear"/>

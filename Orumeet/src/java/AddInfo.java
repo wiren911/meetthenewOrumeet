@@ -8,12 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,25 +16,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
- 
- 
 /**
  *
- * @author sofiehamilton
+ * @author Anton Söderberg
  */
-@WebServlet(urlPatterns = {"/LoginServlet"})
-public class Login extends HttpServlet {
- 
- 
+@WebServlet(urlPatterns = {"/AddInfo"})
+public class AddInfo extends HttpServlet {
     Connection conn;
-    Statement stmt, stmmt;
-    String email, password, role;
-
-    
+    Statement stmt;
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
-    String PassWord = "";
-    
+    String PassWord = "";  
+    String info;
+   
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,60 +40,31 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            response.setContentType("text/html;charset=UTF-8");
-    try (PrintWriter out = response.getWriter()) {
-            email = request.getParameter("txtusername");
-            password = request.getParameter("txtpassword");
-            //role = request.getAttribute("role").toString();
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+           
+            Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(dburl, Username, PassWord);
+                stmt = conn.createStatement();
+                info = request.getParameter("comment");
+                String query ="insert into utbildning (description) values ('"+info+"')";
+                stmt.execute(query);
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+            out.println("<title>Servlet AddInfo</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h3>du har lagt till info. </h3>");
+            out.println("</body>");
+            out.println("</html>");
+            RequestDispatcher rd = request.getRequestDispatcher("UtbildningServlet");
+                rd.include(request, response);
+        }catch(Exception e){
+                e.printStackTrace();
+            }
+    }
  
-    Class.forName("com.mysql.jdbc.Driver");
-    conn = DriverManager.getConnection(dburl, Username, PassWord);
-    stmt = conn.createStatement();
-    stmmt = conn.createStatement();
-//    PreparedStatement ps = conn.prepareStatement( "SELECT role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "'");
-    String uquery = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'User'";
-    String query = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'Admin'";
-    ResultSet rs = stmmt.executeQuery(query);
-    
-    
-    ResultSet rss = stmt.executeQuery(uquery);
-//    role = rs.getString(role);
-    
-   
-//    if(Role == "Admin"){
-//        response.sendRedirect("admin.html");
-//    }
-//    else if(Role == "User"){
-//        response.sendRedirect("oruinfo.html");
-//    }
-//    if(role.equals("User")){
-//        response.sendRedirect("oruinfo.html");
-//    }
-    if(rss.next()){
-        System.out.println("Login successful");
-        response.sendRedirect("oruinfo.html");
-
-    }
-    else if(rs.next()){
-        System.out.println("Login successful");
-        response.sendRedirect("admin.html");        
-    }
-    else {
-        out.println("Fel användarnamn eller lösenord, försök igen");
-        RequestDispatcher rd = request.getRequestDispatcher("index.html");
-        rd.include(request, response);   
-    } 
-    }
-    catch (Exception ex) {
-        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        ex.printStackTrace();
-    }
-}
-   
-   
-   
-   
-   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -133,8 +93,7 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-   
-   
+ 
     /**
      * Returns a short description of the servlet.
      *

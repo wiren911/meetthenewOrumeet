@@ -52,14 +52,15 @@ public class EmailServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             ia.validate();
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EmailServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Form Submitted</h1>");
-            out.println("</body>");
-            out.println("</html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet EmailServlet</title>");
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Form Submitted</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+            response.sendRedirect("index.jsp");
         }catch (javax.mail.internet.AddressException ae){
             
         }

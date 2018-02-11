@@ -4,16 +4,13 @@
  * and open the template in the editor.
  */
  
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.time;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Time;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,25 +18,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
- 
- 
 /**
  *
- * @author sofiehamilton
+ * @author Anton Söderberg
  */
-@WebServlet(urlPatterns = {"/LoginServlet"})
-public class Login extends HttpServlet {
- 
- 
+@WebServlet(urlPatterns = {"/postServlet"})
+public class postServlet extends HttpServlet {
     Connection conn;
-    Statement stmt, stmmt;
-    String email, password, role;
-
-    
+    Statement stmt;
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
     String PassWord = "";
-    
+    String titel;
+    String plats;
+    String tid;
+    String datumet;
+   
+   
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,60 +46,45 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            response.setContentType("text/html;charset=UTF-8");
-    try (PrintWriter out = response.getWriter()) {
-            email = request.getParameter("txtusername");
-            password = request.getParameter("txtpassword");
-            //role = request.getAttribute("role").toString();
+        response.setContentType("text/html;charset=UTF-8");
+       
+        try (PrintWriter out = response.getWriter()) {
+           
+            titel = request.getParameter("txttitel");
+            plats = request.getParameter("txtplats");
+            tid = request.getParameter("appt-time");
+            datumet = request.getParameter("ettDatum");
+   
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(dburl, Username, PassWord);
+            stmt = conn.createStatement();
+                String query = "insert into mote(title, plats, datum, tid) values('"+titel+"', '"+plats+"', '"+datumet+"', '"+tid+"')";
+                stmt.execute(query);
+               
+                    out.println("<button onclick=goBack()>Gå Tillbaka");
+                    out.println("</button>");
+                    out.println("<script>");
+                    out.println("function goBack() {");
+                    out.println("window.history.back()");
+                    out.println("}");
+                    out.println("</script>");
+//                    RequestDispatcher rd = request.getRequestDispatcher("index.html#mote");
+//                      rd.include(request, response);
+                        out.println("<!DOCTYPE html>");
+                        out.println("<html>");
+                        out.println("<head>");
+                        out.println("<title>Servlet postServlet</title>");            
+                        out.println("</head>");
+                        out.println("<body style=\"background-color:lightgrey\">");
+                        out.println("<h1>Du har lagt in följande möte:<br><br> Titel: <Small>"+titel+"</Small><br> Plats: <Small>"+plats+"</Small><br> Datum: <Small>"+datumet+"</Small><br> Tid: <Small>"+tid+"</Small></h1>");
+                        out.println("</body>");
+                        out.println("</html>");
+        }catch(Exception e){
+            e.printStackTrace();
+       
+       }
+    }
  
-    Class.forName("com.mysql.jdbc.Driver");
-    conn = DriverManager.getConnection(dburl, Username, PassWord);
-    stmt = conn.createStatement();
-    stmmt = conn.createStatement();
-//    PreparedStatement ps = conn.prepareStatement( "SELECT role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "'");
-    String uquery = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'User'";
-    String query = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'Admin'";
-    ResultSet rs = stmmt.executeQuery(query);
-    
-    
-    ResultSet rss = stmt.executeQuery(uquery);
-//    role = rs.getString(role);
-    
-   
-//    if(Role == "Admin"){
-//        response.sendRedirect("admin.html");
-//    }
-//    else if(Role == "User"){
-//        response.sendRedirect("oruinfo.html");
-//    }
-//    if(role.equals("User")){
-//        response.sendRedirect("oruinfo.html");
-//    }
-    if(rss.next()){
-        System.out.println("Login successful");
-        response.sendRedirect("oruinfo.html");
-
-    }
-    else if(rs.next()){
-        System.out.println("Login successful");
-        response.sendRedirect("admin.html");        
-    }
-    else {
-        out.println("Fel användarnamn eller lösenord, försök igen");
-        RequestDispatcher rd = request.getRequestDispatcher("index.html");
-        rd.include(request, response);   
-    } 
-    }
-    catch (Exception ex) {
-        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        ex.printStackTrace();
-    }
-}
-   
-   
-   
-   
-   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -133,8 +113,7 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-   
-   
+ 
     /**
      * Returns a short description of the servlet.
      *
