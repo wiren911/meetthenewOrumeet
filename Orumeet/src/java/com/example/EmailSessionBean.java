@@ -2,6 +2,8 @@ package com.example;
 import java.util.Properties;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -60,8 +62,9 @@ public class EmailSessionBean {
             
             //send message using the Transport() funktion            
             Transport.send(message);
-
-            System.out.println("message sent successfully");
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("message sent successfully!!"));
+//            System.out.println("message sent successfully");
 
         } 
            catch (MessagingException ex) {

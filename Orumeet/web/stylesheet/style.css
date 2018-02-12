@@ -8,8 +8,8 @@ and open the template in the editor.
     Author     : user
 */
 html, body{
-    background-color: mintcream;
-
+    background-color: white;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 body{
@@ -19,31 +19,87 @@ body{
 }
 section{
     min-height: 100vh;
+    max-width: 100%;
 }
 #header, #utbildning, #forskning, #blogg, #mote, #larare{
-    padding-top: 5em;
+    padding-top: 8%;
+    padding-left: 2%;
 }
 #menu{
+    margin-top: 5%;
+    height: 10%;
     position: fixed;
     width: 100%;
-    background-color: #052;
+    background-color: #2e78ba;
 }
-#menu ul{
+#adminMenu{
+    position: fixed;
+    width: 100%;
+    background-color: #2e78ba;
+}
+#menu ul, #adminMenu ul{
     list-style-type: none;
     float: right;
+}
+#oruinfo, #addTeacher{
+    padding-top: 5em;
 }
 ul.right{
     float: left;
 }
-#menu li{
+#menu li, #adminMenu li{
     float: left;
 }
-#menu li a{
+#menu li a, #adminMenu li a{
     color: white;
     padding: 0.5em;
     padding: 13px 15px;
     text-decoration: none;
     width: 25%;
 }
+.inputTeacher{
+    padding-top: 10%;
+    height: auto;
+    width: 50%;
+    margin: auto;
+}
+.newTeacher{
+    margin: auto;
+    width: 50%;
+}
+.teipt{
+    display: inline-block;
+    float: left;
+    clear: right;
+    text-align: left;
+    width: 25%;
+}
+.inputTeacher h2{
+    text-align: center;
+    padding-right: 23%;
+}
+.inputFields{
+    display: inline-block;
+}
+#logo{
+    position: absolute;
+    bottom: 0.1%;
+    padding-left: 1%;
+    width: 15%;
 
-
+}
+#searchMeeting{
+    width: 40%;
+    margin: auto;
+    display: inline-block;
+}
+#addMeeting{
+    width: 20%;
+    float: right;
+}
+.searchTeacher{
+    
+}
+.sendPost{
+    
+}

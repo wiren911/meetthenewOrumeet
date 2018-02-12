@@ -38,6 +38,10 @@ public class insertBlogg extends HttpServlet {
                 String query = "insert into blogg(description) values('"+description+"');";
                 stmt.execute(query);
                 System.out.println("Data was inserted");
+                
+                stmt = conn.createStatement();
+                String getBloggQuery = "select * from blogg";
+                stmt.execute(getBloggQuery);
             }
             catch (Exception e){
                 e.printStackTrace();

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+ 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+ 
 /**
  *
  * @author Anton Söderberg
@@ -57,7 +57,7 @@ public class UtbildningServlet extends HttpServlet {
                     out.println("}");
                     out.println("</script><br>");
                 String query = "Select * from utbildning order by id desc";
-                
+               
                 ResultSet rs = stmt.executeQuery(query);
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -66,15 +66,15 @@ public class UtbildningServlet extends HttpServlet {
             out.println("</head>");
 //                out.print("<body><textarea rows=\"6\" cols=\"80\" name=\"comment\" id=\"comment\">\n" +
 //"Enter text here...</textarea>");
-                
+               
 //                kom = request.getParameter("\"comment\"");
 //                out.println(kom);
-                RequestDispatcher rd = request.getRequestDispatcher("utbildning.html");
+                RequestDispatcher rd = request.getRequestDispatcher("Utbildning.html");
                 rd.include(request, response);
                 while(rs.next()){
                     String beskrivning = rs.getString("description");
                     String id = rs.getString("id");
-
+ 
             out.println("<body>");
             out.println("<h4>Inlägg: </h4><p>" + beskrivning + "</p>");
             i++;
@@ -85,19 +85,19 @@ public class UtbildningServlet extends HttpServlet {
                     String fornamn = rset.getString("firstname");
                     String efternamn = rset.getString("lastname");
                                 out.println("<h4>Författare till inlägget: </h4><p>" + fornamn + " "+efternamn+"</p>");
-
+ 
                 out.println("</body>");
             out.println("</html>");
-            
-
-                
+           
+ 
+               
                 }}
-                
+               
         }catch(Exception e){
                 e.printStackTrace();
             }
     }
-
+ 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -112,7 +112,7 @@ public class UtbildningServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+ 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -126,7 +126,7 @@ public class UtbildningServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+ 
     /**
      * Returns a short description of the servlet.
      *
@@ -136,5 +136,5 @@ public class UtbildningServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+ 
 }

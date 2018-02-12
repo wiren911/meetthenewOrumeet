@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+ 
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.time;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+ 
 /**
  *
  * @author Anton Söderberg
@@ -33,8 +33,8 @@ public class postServlet extends HttpServlet {
     String plats;
     String tid;
     String datumet;
-    
-    
+   
+   
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,9 +47,9 @@ public class postServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+       
         try (PrintWriter out = response.getWriter()) {
-            
+           
             titel = request.getParameter("txttitel");
             plats = request.getParameter("txtplats");
             tid = request.getParameter("appt-time");
@@ -60,7 +60,7 @@ public class postServlet extends HttpServlet {
             stmt = conn.createStatement();
                 String query = "insert into mote(title, plats, datum, tid) values('"+titel+"', '"+plats+"', '"+datumet+"', '"+tid+"')";
                 stmt.execute(query);
-                
+               
                     out.println("<button onclick=goBack()>Gå Tillbaka");
                     out.println("</button>");
                     out.println("<script>");
@@ -81,10 +81,10 @@ public class postServlet extends HttpServlet {
                         out.println("</html>");
         }catch(Exception e){
             e.printStackTrace();
-        
+       
        }
     }
-
+ 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -99,7 +99,7 @@ public class postServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+ 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -113,7 +113,7 @@ public class postServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+ 
     /**
      * Returns a short description of the servlet.
      *
@@ -123,5 +123,5 @@ public class postServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+ 
 }

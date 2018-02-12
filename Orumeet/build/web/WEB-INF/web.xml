@@ -24,6 +24,18 @@
         <servlet-name>LärareServlet</servlet-name>
         <servlet-class>LärareServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UtbildningServlet</servlet-name>
+        <servlet-class>UtbildningServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddInfo</servlet-name>
+        <servlet-class>AddInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>posServlet</servlet-name>
+        <servlet-class>posServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>insertServlet</servlet-name>
         <url-pattern>/insertServlet</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>LärareServlet</servlet-name>
         <url-pattern>/L_rareServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UtbildningServlet</servlet-name>
+        <url-pattern>/UtbildningServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddInfo</servlet-name>
+        <url-pattern>/AddInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>posServlet</servlet-name>
+        <url-pattern>/posServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

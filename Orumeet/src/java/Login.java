@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,14 +32,14 @@ public class Login extends HttpServlet {
  
  
     Connection conn;
-    Statement stmt;
-    String email, password;
+    Statement stmt, stmmt;
+    String email, password, role;
+
+    
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
     String PassWord = "";
-   
-   
- 
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,37 +52,54 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+    try (PrintWriter out = response.getWriter()) {
             email = request.getParameter("txtusername");
             password = request.getParameter("txtpassword");
- 
+            //role = request.getAttribute("role").toString();
  
     Class.forName("com.mysql.jdbc.Driver");
     conn = DriverManager.getConnection(dburl, Username, PassWord);
     stmt = conn.createStatement();
-    String query = "SELECT * FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "'";
-    ResultSet rs = stmt.executeQuery(query);
+    stmmt = conn.createStatement();
+//    PreparedStatement ps = conn.prepareStatement( "SELECT role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "'");
+    String uquery = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'User'";
+    String query = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'Admin'";
+    ResultSet rs = stmmt.executeQuery(query);
+    
+    
+    ResultSet rss = stmt.executeQuery(uquery);
+//    role = rs.getString(role);
+    
    
-   
-   
-    if(rs.next()){
-        out.println("Login Sucessfully");
+//    if(Role == "Admin"){
+//        response.sendRedirect("admin.html");
+//    }
+//    else if(Role == "User"){
+//        response.sendRedirect("oruinfo.html");
+//    }
+//    if(role.equals("User")){
+//        response.sendRedirect("oruinfo.html");
+//    }
+    if(rss.next()){
+        System.out.println("Login successful");
+        response.sendRedirect("oruinfo.html");
+
+    }
+    else if(rs.next()){
+        System.out.println("Login successful");
+        response.sendRedirect("admin.html");        
     }
     else {
-           out.println("Fel användarnamn eller lösenord, försök igen");
-           RequestDispatcher rd = request.getRequestDispatcher("index.html");
-            rd.include(request, response);
-           return;
-            }
-   
-   response.sendRedirect("oruinfo.html");
-   
-   
-} catch (Exception ex) {
-    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-    ex.printStackTrace();
+        out.println("Fel användarnamn eller lösenord, försök igen");
+        RequestDispatcher rd = request.getRequestDispatcher("index.html");
+        rd.include(request, response);   
+    } 
+    }
+    catch (Exception ex) {
+        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        ex.printStackTrace();
+    }
 }
-        }
    
    
    
