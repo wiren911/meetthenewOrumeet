@@ -3,13 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/meetthenewOrumeet/Orumeet/src/java/AddInfo.java</file>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/meetthenewOrumeet/Orumeet/web/oruinfo.html</file>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/meetthenewOrumeet/Orumeet/web/admin.html</file>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/meetthenewOrumeet/Orumeet/src/java/UtbildningServlet.java</file>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/meetthenewOrumeet/Orumeet/src/java/postServlet.java</file>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/meetthenewOrumeet/Orumeet/web/stylesheet/style.css</file>
-            <file>file:/C:/Users/user/Documents/NetBeansProjects/meetthenewOrumeet/Orumeet/web/Utbildning.html</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/web/OruInfo.jsp</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/insertBlogg.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/com/example/EmailSessionBean.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/com/example/EmailServlet.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/UtbildningServlet.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/web/index.html</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/listBloggs.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/web/stylesheet/style.css</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/com/example/Mail.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/web/index.jsp</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/ForskningServlet.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/web/Blogg.jsp</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/com/example/SmtpAuthenticator.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/src/java/DisplayBloggServlet.java</file>
+            <file>file:/C:/Users/Anton/nyaprojektet/meetthenewOrumeet/Orumeet/web/admin.jsp</file>
         </group>
     </open-files>
 </project-private>

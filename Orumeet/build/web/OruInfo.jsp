@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+<%-- 
+    Document   : OruInfo
+    Created on : 2018-feb-12, 15:05:00
+    Author     : Anton Söderberg
+--%>
 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
     <head>
         <link href="stylesheet/style.css" rel="stylesheet" type="text/css"/>
@@ -18,32 +19,30 @@ and open the template in the editor.
             <ul class="top-navbar">
                 <li><a class="active" href="#header">Home</a></li>
                 <li><a href="UtbildningServlet">Utbildning</a></li>
-                <li><a href="#forskning">Forskning</a></li>
+                <li><a href="ForskningServlet">Forskning</a></li>
                 <li><a href="#larare">Lärare</a></li>
                 <li><a href="#mote">Möte</a></li>
-                <li><a href="#blogg">Blogg</a></li>
+                <li><a href="DisplayBloggServlet">Blogg</a></li>
                 <li><a href="index.jsp">Send</a></li>
+                <li><a> <%=session.getAttribute("fornamn")%> <%=session.getAttribute("efternamn")%></a></li>
                 <!--<li><a href="secureUser/pageU.html">Login</a></li>-->
             </ul>
         </nav>
         
         <section id="header">
             <div >
-                <div><h2>Välkommen till lärarnas tjött</h2></div>
-                Välkommen till Örebro Universitets informatik sida för lärare och annan personal.
+                <div><h2>Informatik - intranät</h2></div>
+                Välkommen till Örebro Universitets informatik sida för lärare och annan personal.<br><br>
+                
             </div>
 
         </section>
-        <section id="forskning">
-            <div >
-                <div><h2>Forsknings utbildningar</h2></div>
-                Här kommer ni hitta information enbart om sådant som handlar <br />
-                om forskning samt våra forskningsutbildningar.
-            </div>
+
         </section>
          <section id="mote">
             <div id="searchMeeting">
                 <form  method="get" action="getServlet"> 
+                    
                     <label for="möte"><b>För att se information om vilka möten som finns<br /></b></label>
                     <label for="valjDatum">Börja med att välja ett datum:</label><br><br>
                     <input type="date" id="valjDatum" name="valjDatum" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" />
@@ -80,19 +79,6 @@ and open the template in the editor.
                 </form>
             </div>
         </section>
-        <section id="blogg">
-            <div class="sendPost">
-                <div><h2>Här presenteras lite mer sekretesbelagd information.</h2></div>
-                <form id="myForm" action="insertBlogg" method="post">
-                    Description: <textarea name="txtdescription"></textarea><br><br>
-                    <br>
-                    <p><strong>Note:</strong> Lägg in bild här.</p>
-                    <br>
-                    <input type="file" id="myFile">
-                    <input type="submit" value="Post"/>
-                    <input type="reset" value="Clear" />
-                </form>
-            </div>
-        </section>
+
     </body>
 </html>

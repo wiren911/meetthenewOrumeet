@@ -22,8 +22,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Anton Söderberg
  */
-@WebServlet(urlPatterns = {"/UtbildningServlet"})
-public class UtbildningServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/ForskningServlet"})
+public class ForskningServlet extends HttpServlet {
     Connection conn;
     Statement stmt;
     Statement stm;
@@ -31,9 +31,7 @@ public class UtbildningServlet extends HttpServlet {
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
     String PassWord = "";  
-    int i = 1;
-    
-   
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,22 +45,20 @@ public class UtbildningServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><link href=\"stylesheet/style.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+            out.println("<link href=\"stylesheet/style.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+            out.println("<title>Servlet ForskningServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+
             Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(dburl, Username, PassWord);
                 stmt = conn.createStatement();
                 st= conn.createStatement();
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            out.println("<title>Servlet UtbildningServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            
-            
+                
                 out.println("<button onclick=goBack()>Ga Tillbaka");
                     out.println("</button>");
                     out.println("<script>");
@@ -70,19 +66,18 @@ public class UtbildningServlet extends HttpServlet {
                     out.println("window.history.back()");
                     out.println("}");
                     out.println("</script><br>");
+                    
                     HttpSession session = request.getSession(true);
                     out.println("Du ar inloggad som: ");
                     out.println(session.getAttribute("fornamn"));
-                    out.println(session.getAttribute("efternamn"));
+                    out.println(session.getAttribute("efternamn")); 
                     
-                    out.println("<h1>Valkommen till forumet for Utbildning</h1>");
+                    out.println("<h1>Valkommen till forumet for Forskning</h1>");
 
-                String query = "Select * from utbildning order by id desc";
-               
+                String query = "Select * from forskning order by id desc";
                 ResultSet rs = stmt.executeQuery(query);
-
-
-                RequestDispatcher rd = request.getRequestDispatcher("Utbildning.html");
+            
+                RequestDispatcher rd = request.getRequestDispatcher("Forskning.html");
                 rd.include(request, response);
                 while(rs.next()){
                     String beskrivning = rs.getString("description");
@@ -94,20 +89,16 @@ public class UtbildningServlet extends HttpServlet {
             out.println("<h4>Inlagg: </h4><p>" + beskrivning + "</p>");
             out.println("<h4>Datum: "+datum+" Tid: "+tid+"");
             stm = conn.createStatement();
-            String aquery = "Select firstname, lastname from larare join utbildning on larare.id = larare where utbildning.id = '"+id+"' ";
+            String aquery = "Select firstname, lastname from larare join forskning on larare.id = larare where forskning.id = '"+id+"' ";
             ResultSet rset = stm.executeQuery(aquery);
                 while(rset.next()){
                     String fornamn = rset.getString("firstname");
                     String efternamn = rset.getString("lastname");
                                 out.println("<h4>Forfattare till inlagget: </h4><p>" + fornamn + " "+efternamn+"</p>");
                                 out.println("--------------------------------------------------------------");
-                out.println("</body>");
-            out.println("</html>");
-           
- 
-               
                 }}
-               
+               out.println("</body>");
+            out.println("</html>");
         }catch(Exception e){
                 e.printStackTrace();
             }
@@ -125,11 +116,6 @@ public class UtbildningServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String username = request.getParameter("newUser");
-System.out.println("encoding: "+request.getCharacterEncoding());
-
-System.out.println("received: "+username);
         processRequest(request, response);
     }
  
@@ -144,11 +130,6 @@ System.out.println("received: "+username);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String username = request.getParameter("newUser");
-System.out.println("encoding: "+request.getCharacterEncoding());
-
-System.out.println("received: "+username);
         processRequest(request, response);
     }
  

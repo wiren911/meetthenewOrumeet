@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
  
  
 /**
@@ -35,6 +36,7 @@ public class getServlet extends HttpServlet {
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
     String PassWord = "";  
+    String id;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,10 +50,13 @@ public class getServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-               
+               Class.forName("com.mysql.jdbc.Driver");
                 datum = request.getParameter("valjDatum");
-            Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(dburl, Username, PassWord);
+                HttpSession session = request.getSession(true);
+                request.getSession().setAttribute("ettDatum", datum);
+            
+                
                 stmt = conn.createStatement();
                 stm = conn.createStatement();
                 st = conn.createStatement();
@@ -69,7 +74,11 @@ public class getServlet extends HttpServlet {
                     out.println("</body>");
                     r.close();
                 }else{
-                    out.println("<h1> Här presenteras alla möten under valt datum</h1>");
+                    out.println("<h1> Här presenteras alla möten under valt datum</h1><br>");
+                    out.println("<form id=\"aForm\" action=\"addLarareMote\" method=\"post\">");
+                out.println("<input type=\"submit\" value=\"Anmäl dig till ett möte\"/>");
+                out.println("</form>");
+                    
                     }
                     out.println("<button onclick=goBack()>Gå Tillbaka");
                     out.println("</button>");
@@ -84,7 +93,9 @@ public class getServlet extends HttpServlet {
                     String plats = rs.getString("plats");
                     String tid = rs.getString("tid");
                     String ettDatum = rs.getString("datum");
-                    String id = rs.getString("id");
+                    id = rs.getString("id");
+                    
+                    
                
                     out.println("<!DOCTYPE html>");
                     out.println("<html>");
@@ -97,12 +108,15 @@ public class getServlet extends HttpServlet {
                 String aquery = "select * from larare join larare_mote on larare.id = larare join mote on mote.id = mote where mote.id ='"+id+"'";
                 ResultSet rss = stm.executeQuery(aquery);
                 ResultSet rt = st.executeQuery(aquery);
+                //Knapp för att anmäla dig till mötet
+                
                
                 //Kontrollerar med databasen
                     if(rt.first() == false){
                         out.println("<p style=\"color:red;\"> Inga personer är uppskrivna på mötet.</p>");
                     }
                     else{
+                        
                         out.println("<h3 style=\"color:grey;\">Personer som medverkar under detta möte är:</h3>");
                     }
                     while (rss.next()){
@@ -110,11 +124,14 @@ public class getServlet extends HttpServlet {
                 String fornamn = rss.getString("firstname");
                 String efternamn = rss.getString("lastname");
                     out.println("<ul style=\"color:red;\"><li>"+fornamn+" "+efternamn+"</li></ul>");
+                    
                     }
                     out.println("</body>");
                     out.println("</html>");
            
-                }} catch (Exception e){
+                }
+                
+                } catch (Exception e){
                 e.printStackTrace();
             }
     }

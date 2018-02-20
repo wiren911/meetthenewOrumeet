@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 html, body{
     background-color: white;
-    overflow-y: hidden;
+    
     overflow-x: hidden;
 }
 body{
@@ -97,9 +97,8 @@ ul.right{
     width: 20%;
     float: right;
 }
-.searchTeacher{
-    
-}
-.sendPost{
-    
+textarea{
+    width: 250px;
+    hight: 150px;
+    resizeble: none;
 }

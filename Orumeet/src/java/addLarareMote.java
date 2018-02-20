@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- 
+
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -20,22 +21,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
- 
+
 /**
  *
  * @author Anton Söderberg
  */
-@WebServlet(urlPatterns = {"/AddInfo"})
-public class AddInfo extends HttpServlet {
-    Connection conn;
+@WebServlet(urlPatterns = {"/addLarareMote"})
+public class addLarareMote extends HttpServlet {
+Connection conn;
     Statement stmt, stm;
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
     String PassWord = "";  
-    String info;
-    String mail;
-    String id;
-   
+     String mail;
+     String id;
+     String datumet;
+     String titeln;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,43 +50,53 @@ public class AddInfo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           
-            Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection(dburl, Username, PassWord);
-                
-                stm = conn.createStatement();
-               
-                HttpSession session = request.getSession(true);
-                mail = (String) session.getAttribute("name");
-                String aquery = "select * from larare where email ='"+mail+"'";
-                ResultSet rs = stm.executeQuery(aquery);
-                while(rs.next()){
-                id = rs.getString("id");
-                
-                info = request.getParameter("comment");
-                stmt = conn.createStatement();
-                Date now = new Date(System.currentTimeMillis());
-                Time time = new Time(System.currentTimeMillis());
-                String query ="insert into utbildning (description, larare, datum, tid) values ('"+info+"', '"+id+"', '"+now+"', '"+time+"')";
-                stmt.execute(query);
-                }
             out.println("<!DOCTYPE html>");
             out.println("<html>");
-            out.println("<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            out.println("<title>Servlet AddInfo</title>");            
+            out.println("<head>");
+            out.println("<title>Servlet addLarareMote</title>");            
             out.println("</head>");
-            out.println("<body>");
-            out.println("<h3>Grattis! Du har lagt till info.</h3>");
+            out.println("<body style=\"background-color:lightgrey\">");
+            out.println("<h1>Välj ett möte i listan</h1>");
+            conn = DriverManager.getConnection(dburl, Username, PassWord);
+                
+                stm = conn.createStatement();
+                stmt = conn.createStatement();
+               HttpSession session = request.getSession(true);
+//                mail = (String) session.getAttribute("name");
+//                String query = "select * from larare where email ='"+mail+"'";
+//                ResultSet rs = stm.executeQuery(query);
+                datumet = (String) session.getAttribute("ettDatum");
+                String aquery = "select * from mote where datum = '"+datumet+"'";
+                ResultSet rss = stmt.executeQuery(aquery);
+                out.println("<select id=\"val\">");
+                while(rss.next()){
+                     titeln = rss.getString("title");
+                    out.println("<option value=>"+titeln+"</option>");
+                }
+                
+                out.println("</select>");
+                
+                out.println("<input type=\"submit\" value=\"anmäl dig\">");
+                
+               
+                
+                
+//                while(rs.next()){
+//                id = rs.getString("id");
+//                }
+//               String aquery = "insert into larare_mote values ('"+id+"', '"+moteId+"')"; 
+//               stmt.execute(aquery);
+            
+            
+            
             out.println("</body>");
             out.println("</html>");
-            RequestDispatcher rd = request.getRequestDispatcher("UtbildningServlet");
-                rd.include(request, response);
-                
+            
         }catch(Exception e){
                 e.printStackTrace();
             }
     }
- 
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -100,7 +111,7 @@ public class AddInfo extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
- 
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -114,7 +125,7 @@ public class AddInfo extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
- 
+
     /**
      * Returns a short description of the servlet.
      *
@@ -124,5 +135,5 @@ public class AddInfo extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
- 
+
 }

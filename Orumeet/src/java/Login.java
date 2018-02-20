@@ -15,11 +15,13 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
  
  
  
@@ -32,14 +34,15 @@ public class Login extends HttpServlet {
  
  
     Connection conn;
-    Statement stmt, stmmt;
-    String email, password, role;
-
-    
+    Statement stmt, stmmt, st;
+    String password, role;
+    String email = new String();  
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
     String PassWord = "";
-    
+    String fornamn;
+    String mail;
+    String efternamn;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -53,7 +56,9 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
     try (PrintWriter out = response.getWriter()) {
-            email = request.getParameter("txtusername");
+            
+            
+        email = request.getParameter("txtusername");
             password = request.getParameter("txtpassword");
             //role = request.getAttribute("role").toString();
  
@@ -61,13 +66,22 @@ public class Login extends HttpServlet {
     conn = DriverManager.getConnection(dburl, Username, PassWord);
     stmt = conn.createStatement();
     stmmt = conn.createStatement();
+    st = conn.createStatement();
 //    PreparedStatement ps = conn.prepareStatement( "SELECT role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "'");
-    String uquery = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'User'";
-    String query = "SELECT email, password, role FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'Admin'";
+    String uquery = "SELECT * FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'User'";
+    String query = "SELECT * FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "' and role = 'Admin'";
+    String aquery = "SELECT * FROM LARARE where EMAIL = '" + email + "' and PASSWORD = '" + password + "'";
     ResultSet rs = stmmt.executeQuery(query);
-    
-    
+    ResultSet r = st.executeQuery(aquery);
     ResultSet rss = stmt.executeQuery(uquery);
+    while (r.next()){
+        fornamn = r.getString("firstname");
+        efternamn = r.getString("lastname");
+    }
+//    fornamn = rss.getString("firstname");
+//    mail = rss.getString("email");
+//    String efternamn = rss.getString("lastname");
+
 //    role = rs.getString(role);
     
    
@@ -82,12 +96,28 @@ public class Login extends HttpServlet {
 //    }
     if(rss.next()){
         System.out.println("Login successful");
-        response.sendRedirect("oruinfo.html");
+//        ServletContext context=getServletContext(); 
+//        String driverName=context.getInitParameter(email);
+//        out.println("driver name is="+driverName);  
+//  
+//        out.close();
+//             mail = rss.getString("email");
+//        out.print(mail);
+        HttpSession session = request.getSession(true);
+        request.getSession().setAttribute("fornamn", fornamn);
+        request.getSession().setAttribute("efternamn", efternamn);
+        request.getSession().setAttribute("name", email);
+        response.sendRedirect("OruInfo.jsp");
+        
 
     }
-    else if(rs.next()){
+    else if (rs.next()){
         System.out.println("Login successful");
-        response.sendRedirect("admin.html");        
+        HttpSession session = request.getSession(true);
+        request.getSession().setAttribute("fornamn", fornamn);
+        request.getSession().setAttribute("efternamn", efternamn);
+        request.getSession().setAttribute("name", email);
+        response.sendRedirect("admin.jsp");        
     }
     else {
         out.println("Fel användarnamn eller lösenord, försök igen");
@@ -99,6 +129,7 @@ public class Login extends HttpServlet {
         Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         ex.printStackTrace();
     }
+    
 }
    
    

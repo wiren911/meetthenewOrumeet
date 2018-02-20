@@ -3,41 +3,38 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
- 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Time;
+import java.time.Instant;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+import javax.servlet.http.HttpSession;
+
 /**
  *
- * @author sofiehamilton
+ * @author Anton Söderberg
  */
- @WebServlet(urlPatterns = {"/UpdateLarare"})
-public class UpdateLarare extends HttpServlet {
-   
+@WebServlet(urlPatterns = {"/AddInfoForskning"})
+public class AddInfoForskning extends HttpServlet {
     Connection conn;
-    Statement stmt;
-    String firstname;
-    String lastname;
-    String email;
-    String phone;
-    String password;
-    String admin = "0";
+    Statement stmt, stm;
     String dburl = "jdbc:mysql://localhost:3306/oru?zeroDateTimeBehavior=convertToNull";
     String Username = "root";
-    String PassWord = "";
- 
+    String PassWord = "";  
+    String info;
+    String mail;
+    String id;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,50 +43,48 @@ public class UpdateLarare extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws java.lang.ClassNotFoundException
-     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
            
-            firstname = request.getParameter("fornamntxt");
-            lastname = request.getParameter("efternamntxt");
-            email = request.getParameter("emailtxt");
-            password = request.getParameter("passwordtxt");
-            phone = request.getParameter("nummertxt");
-           
-//    admin = request.getParameter("adminbtn");
-//    if (admin != null)
-//        admin = "1";
- 
-   
-                Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(dburl, Username, PassWord);
+                
+                stm = conn.createStatement();
+                
+                HttpSession session = request.getSession(true);
+                mail = (String) session.getAttribute("name");
+                String aquery = "select * from larare where email ='"+mail+"'";
+                ResultSet rs = stm.executeQuery(aquery);
+                while(rs.next()){
+                id = rs.getString("id");
+                
+                info = request.getParameter("onecomment");
                 stmt = conn.createStatement();
-               
-                 // Execute SQL query
-         String query = "update larare set phone = '"+phone+"', email = '"+email+"', password = '"+password+"' where firstname = '"+firstname+"' and lastname = '"+lastname+"'";
-         
-        stmt.executeQuery(query);
-         out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Servlet postServlet</title>");            
-                        out.println("</head>");
-                        out.println("<body style=\"background-color:lightgrey\">");
-                        out.println("<h1>Du har ändrat informationen</h1>");
-                        out.println("</body>");
-                        out.println("</html>");
-   
-        }
-       
-         catch (Exception e){
+                Date date = new Date(System.currentTimeMillis());
+                Time time = new Time(System.currentTimeMillis());
+                String query ="insert into forskning (description, larare, datum, tid) values ('"+info+"', '"+id+"', '"+date+"', '"+time+"')";
+                stmt.execute(query);
+                }
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+            out.println("<title>Servlet AddInfoForskning</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h3>Grattis! Du har lagt till info.</h3>");
+            out.println("</body>");
+            out.println("</html>");
+            RequestDispatcher rd = request.getRequestDispatcher("ForskningServlet");
+                rd.include(request, response);
+                
+        }catch(Exception e){
                 e.printStackTrace();
             }
     }
- 
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -102,15 +97,9 @@ public class UpdateLarare extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UpdateLarare.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateLarare.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
- 
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -122,15 +111,9 @@ public class UpdateLarare extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UpdateLarare.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateLarare.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
- 
+
     /**
      * Returns a short description of the servlet.
      *
@@ -140,5 +123,5 @@ public class UpdateLarare extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
- 
+
 }

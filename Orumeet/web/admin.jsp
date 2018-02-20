@@ -12,20 +12,29 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        
         <nav id="adminMenu">
             <a><img src="img/logotype305x220.png" id="logo" alt="no image was found"/></a>
             <ul class="top-navbar">
                 <li><a class="active" href="#main">Home</a></li>
+                
+                
                 <li><a href="#addTeacher">Add Teacher</a></li>
-                <li><a class="" href="oruinfo.html">Oru HomePage</a></li>
+                <li><a class="" href="OruInfo.jsp">Oru HomePage</a></li>
+                <li><a> <%=session.getAttribute("fornamn")%> <%=session.getAttribute("efternamn")%></a></li>
             </ul>
         </nav>
+        
         <section id="main">
-            
+            <br><br><br><br>
+            <div>
+                <h1>Välkommen, administratör!</h1>
+            </div>
+
         </section>
         <section id="addTeacher">
             <div class="inputTeacher">
-                <h2>Add A New Teacher</h2>
+                <h2>Add A New User, </h2>
             <form method="post" action="insertServlet" class="newTeacher">
                 <label class="teipt">FirstName:</label><input type="text" name="txtname" required="required" class="inputFields"/><br><br>
                 <label class="teipt">LastName:</label><input type="text" name="txtlast" class="inputFields"/><br><br>
